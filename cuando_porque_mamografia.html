@@ -1,0 +1,373 @@
+
+<style>
+.wrap { padding: 1rem 0; font-family: Arial, sans-serif; }
+.top-banner { background: #993556; border-radius: 12px; padding: 16px 20px; margin-bottom: 1.25rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+.top-banner-title { font-size:16px; font-weight:700; color:#FBEAF0; margin:0; }
+.top-banner-sub { font-size:12px; color:#F4C0D1; margin:4px 0 0; }
+.top-badge { background:#72243E; color:#F4C0D1; font-size:11px; font-weight:600; padding:5px 13px; border-radius:20px; white-space:nowrap; }
+.tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1.25rem; }
+.tab-btn { padding:7px 15px; font-size:12px; font-weight:600; border-radius:20px; border:1.5px solid #D4537E; background:transparent; color:#993556; cursor:pointer; transition:all .2s; }
+.tab-btn.active { background:#993556; color:#FBEAF0; border-color:#993556; }
+.tab-btn:hover:not(.active) { background:#FBEAF0; }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+
+/* TIMELINE */
+.timeline { position:relative; padding-left:0; margin:0; }
+.tl-item { display:flex; gap:0; margin-bottom:10px; align-items:stretch; }
+.tl-left { display:flex; flex-direction:column; align-items:center; width:56px; flex-shrink:0; }
+.tl-age { background:#993556; color:#FBEAF0; font-size:11px; font-weight:700; border-radius:20px; padding:4px 8px; white-space:nowrap; text-align:center; z-index:1; }
+.tl-line { width:2px; flex:1; background:#F4C0D1; margin:4px 0; min-height:12px; }
+.tl-item:last-child .tl-line { display:none; }
+.tl-card { flex:1; background:#fff0f5; border:1px solid #F4C0D1; border-radius:12px; padding:12px 14px; margin-left:10px; cursor:pointer; transition:background .2s, border-color .2s; position:relative; }
+.tl-card:hover { border-color:#D4537E; background:#fde8f0; }
+.tl-card.open { background:#993556; border-color:#72243E; }
+.tl-card.risk { border-left:4px solid #E24B4A; }
+.tl-card.risk.open { border-left:4px solid #F09595; }
+.tl-card-header { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+.tl-card-title { font-size:13px; font-weight:700; color:#72243E; line-height:1.4; margin:0; flex:1; }
+.tl-card.open .tl-card-title { color:#FBEAF0; }
+.tl-toggle { font-size:18px; color:#D4537E; font-weight:700; line-height:1; flex-shrink:0; }
+.tl-card.open .tl-toggle { color:#F4C0D1; }
+.tl-pill { display:inline-block; font-size:10px; font-weight:600; padding:2px 8px; border-radius:10px; margin-top:6px; }
+.pill-auto { background:#FAEEDA; color:#633806; }
+.pill-screen { background:#EAF3DE; color:#27500A; }
+.pill-diag { background:#FCEBEB; color:#A32D2D; }
+.pill-risk { background:#FCEBEB; color:#A32D2D; }
+.tl-card.open .pill-auto { background:#633806; color:#FAC775; }
+.tl-card.open .pill-screen { background:#27500A; color:#C0DD97; }
+.tl-card.open .pill-diag { background:#791F1F; color:#F7C1C1; }
+.tl-card.open .pill-risk { background:#791F1F; color:#F7C1C1; }
+.tl-detail { display:none; margin-top:10px; font-size:12px; color:#FBEAF0; line-height:1.6; border-top:1px solid #72243E; padding-top:10px; }
+.tl-card.open .tl-detail { display:block; }
+
+/* POR QUÉ */
+.why-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:10px; margin-bottom:1.25rem; }
+.why-card { background:#fff0f5; border:1px solid #F4C0D1; border-radius:12px; padding:14px; }
+.why-icon { font-size:26px; margin-bottom:8px; display:block; }
+.why-title { font-size:13px; font-weight:700; color:#72243E; margin:0 0 6px; }
+.why-text { font-size:12px; color:#4B1528; line-height:1.6; }
+.stat-highlight { background:#993556; color:#FBEAF0; border-radius:8px; padding:2px 7px; font-weight:700; font-size:12px; display:inline-block; margin-bottom:4px; }
+
+/* EL PROCEDIMIENTO */
+.proc-steps { display:grid; grid-template-columns:repeat(auto-fill,minmax(185px,1fr)); gap:10px; margin-bottom:1.25rem; }
+.proc-step { background:#fff0f5; border:1px solid #F4C0D1; border-radius:12px; padding:14px; position:relative; }
+.proc-num { position:absolute; top:-10px; left:14px; background:#993556; color:#FBEAF0; font-size:11px; font-weight:700; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+.proc-title { font-size:12px; font-weight:700; color:#72243E; margin: 8px 0 5px; }
+.proc-text { font-size:12px; color:#4B1528; line-height:1.55; }
+.proc-time { font-size:10px; font-weight:600; color:#993556; margin-top:6px; }
+.rol-box { background:#4B1528; border-radius:12px; padding:16px 20px; margin-bottom:1.25rem; }
+.rol-title { font-size:13px; font-weight:700; color:#9FE1CB; margin:0 0 10px; }
+.rol-list { list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:8px; }
+.rol-list li { display:flex; align-items:flex-start; gap:8px; font-size:12px; color:#FBEAF0; line-height:1.55; }
+.rol-dot { width:8px; height:8px; background:#D4537E; border-radius:50%; flex-shrink:0; margin-top:5px; }
+
+/* TIPOS */
+.tipos-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:1.25rem; }
+@media (max-width:500px) { .tipos-grid { grid-template-columns:1fr; } }
+.tipo-card { border-radius:12px; padding:16px; }
+.tipo-screening { background:#EAF3DE; border:1px solid #97C459; }
+.tipo-diag { background:#FCEBEB; border:1px solid #F09595; }
+.tipo-label { font-size:11px; font-weight:700; letter-spacing:.5px; margin:0 0 6px; }
+.tipo-screening .tipo-label { color:#27500A; }
+.tipo-diag .tipo-label { color:#791F1F; }
+.tipo-title { font-size:14px; font-weight:700; margin:0 0 8px; }
+.tipo-screening .tipo-title { color:#173404; }
+.tipo-diag .tipo-title { color:#501313; }
+.tipo-text { font-size:12px; line-height:1.6; }
+.tipo-screening .tipo-text { color:#27500A; }
+.tipo-diag .tipo-text { color:#791F1F; }
+
+/* ACCESO */
+.acceso-box { background:#4B1528; border-radius:12px; padding:16px 20px; margin-bottom:1.25rem; }
+.acceso-title { font-size:13px; font-weight:700; color:#9FE1CB; margin:0 0 10px; }
+.acceso-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:8px; }
+.acceso-item { background:#72243E; border-radius:10px; padding:12px; }
+.acceso-item-title { font-size:12px; font-weight:700; color:#F4C0D1; margin:0 0 4px; }
+.acceso-item-text { font-size:11px; color:#FBEAF0; line-height:1.55; }
+.reminder-strip { background:#D4537E; border-radius:10px; padding:12px 16px; text-align:center; font-size:12px; color:#FBEAF0; font-weight:600; line-height:1.7; }
+</style>
+
+<div class="wrap">
+  <div class="top-banner">
+    <div>
+      <p class="top-banner-title">¿Cuándo y por qué hacerse una mamografía?</p>
+      <p class="top-banner-sub">Actividad 4 — Stand Día Mundial de la Salud · 7 de abril 2026</p>
+    </div>
+    <span class="top-badge">Campaña cáncer de mama</span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('timeline',this)">Línea de vida</button>
+    <button class="tab-btn" onclick="switchTab('porque',this)">¿Por qué hacérsela?</button>
+    <button class="tab-btn" onclick="switchTab('tipos',this)">Tipos de mamografía</button>
+    <button class="tab-btn" onclick="switchTab('procedimiento',this)">El procedimiento</button>
+    <button class="tab-btn" onclick="switchTab('acceso',this)">Cómo acceder</button>
+  </div>
+
+  <!-- TAB 1: LÍNEA DE VIDA -->
+  <div class="tab-panel active" id="tab-timeline">
+    <p style="font-size:11px;font-weight:700;color:#993556;letter-spacing:.6px;text-transform:uppercase;margin:0 0 12px;">Tocá cada etapa para ver la recomendación completa</p>
+    <div class="timeline" id="tlContainer"></div>
+    <div class="reminder-strip" style="margin-top:1rem;">
+      El autoexamen mensual es para <em>todas las etapas</em>. Conocer tu cuerpo es el primer paso de la prevención.
+    </div>
+  </div>
+
+  <!-- TAB 2: POR QUÉ -->
+  <div class="tab-panel" id="tab-porque">
+    <div class="why-grid" id="whyGrid"></div>
+    <div class="reminder-strip">
+      Detectado en estadio I, el cáncer de mama tiene una tasa de supervivencia a 5 años superior al 95%.<br>
+      <span style="font-weight:400;font-size:11px;">La mamografía es hoy la herramienta de detección precoz más eficaz disponible.</span>
+    </div>
+  </div>
+
+  <!-- TAB 3: TIPOS -->
+  <div class="tab-panel" id="tab-tipos">
+    <div class="tipos-grid">
+      <div class="tipo-card tipo-screening">
+        <p class="tipo-label">MAMOGRAFÍA DE</p>
+        <p class="tipo-title">Screening o rastreo</p>
+        <p class="tipo-text">Se realiza en personas <strong>sin síntomas</strong> como control preventivo periódico. Permite detectar alteraciones antes de que sean palpables o generen síntomas. Es el tipo más común en campañas de detección masiva.</p>
+        <p class="tipo-text" style="margin-top:8px;"><strong>Frecuencia recomendada:</strong> anual o bienal a partir de los 40 años, según indicación médica.</p>
+      </div>
+      <div class="tipo-card tipo-diag">
+        <p class="tipo-label">MAMOGRAFÍA DE</p>
+        <p class="tipo-title">Diagnóstico</p>
+        <p class="tipo-text">Se indica cuando hay <strong>síntomas, hallazgos sospechosos</strong> en un screening previo, o para evaluar una anomalía ya detectada. Suele incluir más proyecciones y mayor detalle de zonas específicas.</p>
+        <p class="tipo-text" style="margin-top:8px;"><strong>No es una mamografía de rutina:</strong> la prescribe el médico ante una situación concreta.</p>
+      </div>
+    </div>
+    <div style="background:#fff0f5;border:1px solid #F4C0D1;border-radius:12px;padding:14px;margin-bottom:1.25rem;">
+      <p style="font-size:13px;font-weight:700;color:#72243E;margin:0 0 8px;">¿Y la ecografía mamaria?</p>
+      <p style="font-size:12px;color:#4B1528;line-height:1.6;">La ecografía <strong>no reemplaza</strong> a la mamografía, pero la complementa. Se usa especialmente en mamas densas, en personas jóvenes, para evaluar bultos palpables o como guía de biopsias. El médico decide cuál o cuáles estudios solicitar según cada caso.</p>
+    </div>
+    <div style="background:#fff0f5;border:1px solid #F4C0D1;border-radius:12px;padding:14px;">
+      <p style="font-size:13px;font-weight:700;color:#72243E;margin:0 0 8px;">¿Qué es la tomosíntesis (mamografía 3D)?</p>
+      <p style="font-size:12px;color:#4B1528;line-height:1.6;">Es una tecnología avanzada que genera imágenes en tres dimensiones del tejido mamario, reduciendo superposiciones y aumentando la precisión diagnóstica. No siempre está disponible en el sistema público, pero su uso crece progresivamente.</p>
+    </div>
+  </div>
+
+  <!-- TAB 4: PROCEDIMIENTO -->
+  <div class="tab-panel" id="tab-procedimiento">
+    <div class="proc-steps" id="procSteps"></div>
+    <div class="rol-box">
+      <p class="rol-title">El rol del Técnico en Radiología en este proceso</p>
+      <ul class="rol-list">
+        <li><div class="rol-dot"></div><span>Recibe y contiene a la persona antes del estudio, explicando el procedimiento con claridad.</span></li>
+        <li><div class="rol-dot"></div><span>Posiciona correctamente la mama para obtener imágenes diagnósticas de calidad óptima.</span></li>
+        <li><div class="rol-dot"></div><span>Maneja el equipo de rayos X asegurando la menor dosis de radiación posible.</span></li>
+        <li><div class="rol-dot"></div><span>Responde preguntas del paciente y genera un ambiente de confianza y respeto.</span></li>
+        <li><div class="rol-dot"></div><span>Garantiza la privacidad y dignidad de la persona durante todo el procedimiento.</span></li>
+        <li><div class="rol-dot"></div><span>Verifica la calidad de las imágenes antes de dar por finalizado el estudio.</span></li>
+      </ul>
+    </div>
+    <div class="reminder-strip">
+      Podés hacer preguntas antes, durante y después del estudio. El equipo de salud está para acompañarte.
+    </div>
+  </div>
+
+  <!-- TAB 5: ACCESO -->
+  <div class="tab-panel" id="tab-acceso">
+    <div class="acceso-box" style="margin-bottom:1.25rem;">
+      <p class="acceso-title">¿Dónde y cómo acceder a la mamografía en Argentina?</p>
+      <div class="acceso-grid" id="accesoGrid"></div>
+    </div>
+    <div style="background:#fff0f5;border:1px solid #F4C0D1;border-radius:12px;padding:14px;margin-bottom:1.25rem;">
+      <p style="font-size:13px;font-weight:700;color:#72243E;margin:0 0 8px;">Programa Nacional de Detección Precoz del Cáncer de Mama</p>
+      <p style="font-size:12px;color:#4B1528;line-height:1.6;">Dependiente del Ministerio de Salud de la Nación, garantiza el acceso gratuito a la mamografía para toda persona que la necesite, independientemente de si tiene o no obra social. Incluye también equipamiento, capacitación del personal y seguimiento de casos detectados.</p>
+    </div>
+    <div style="background:#fff0f5;border:1px solid #F4C0D1;border-radius:12px;padding:14px;margin-bottom:1.25rem;">
+      <p style="font-size:13px;font-weight:700;color:#72243E;margin:0 0 8px;">¿Necesito turno previo?</p>
+      <p style="font-size:12px;color:#4B1528;line-height:1.6;">En hospitales públicos y CAPS generalmente se pide turno. En campañas de detección masiva (como mamógrafos móviles en plazas o barrios) suele atenderse sin turno. En el stand de hoy podés preguntar dónde sacar turno en San Luis.</p>
+    </div>
+    <div class="reminder-strip">
+      La mamografía es un derecho. El sistema público de salud existe para que puedas ejercerlo.<br>
+      <span style="font-weight:400;font-size:11px;">No esperes a tener síntomas. El control preventivo es la clave.</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const tlData = [
+  {
+    age: "Desde la adolescencia",
+    title: "Autoexamen mensual de mamas",
+    pill: "pill-auto", pillLabel: "Autocuidado",
+    risk: false,
+    detail: "Desde la adolescencia se recomienda aprender a reconocer el propio cuerpo. El autoexamen mensual, realizado idealmente a los pocos días de la menstruación, permite detectar cambios en la textura, el tamaño o la forma. No es un método diagnóstico, pero es el primer paso del autocuidado. Ante cualquier cambio: consultar."
+  },
+  {
+    age: "20 a 39 años",
+    title: "Examen clínico mamario periódico con el médico",
+    pill: "pill-auto", pillLabel: "Control clínico",
+    risk: false,
+    detail: "Aunque la mamografía de rutina no se indica antes de los 40, el médico de cabecera o el ginecólogo/a deben realizar un examen físico de las mamas en cada consulta de rutina. También es el momento ideal para evaluar factores de riesgo personales y familiares."
+  },
+  {
+    age: "30 años (con riesgo)",
+    title: "Mamografía anticipada por antecedentes familiares o genéticos",
+    pill: "pill-risk", pillLabel: "Alto riesgo",
+    risk: true,
+    detail: "Las personas con antecedentes familiares de primer grado (madre, hermana, hija) con cáncer de mama u ovario, o con mutaciones conocidas en BRCA1/BRCA2, pueden necesitar mamografías y/o RMN mamaria desde los 30 años, o incluso 10 años antes de la edad de diagnóstico del familiar. El médico evalúa cada caso."
+  },
+  {
+    age: "40 años",
+    title: "Inicio de la mamografía de screening de rutina",
+    pill: "pill-screen", pillLabel: "Screening",
+    risk: false,
+    detail: "A partir de los 40 años se recomienda la mamografía de rastreo anual o bienal (cada dos años) en ausencia de síntomas. La frecuencia la define el médico según el perfil de riesgo de cada persona. Es el estudio preventivo más importante disponible para la detección precoz del cáncer de mama."
+  },
+  {
+    age: "40 a 74 años",
+    title: "Mamografía de control periódico continuo",
+    pill: "pill-screen", pillLabel: "Screening",
+    risk: false,
+    detail: "El seguimiento regular no se interrumpe al llegar a una determinada edad. Mientras la persona esté en buen estado de salud general y la mamografía pueda cambiar las decisiones de tratamiento, el control continúa. La frecuencia puede ajustarse con los años según indicación médica."
+  },
+  {
+    age: "Cualquier edad",
+    title: "Mamografía diagnóstica ante síntomas o hallazgos",
+    pill: "pill-diag", pillLabel: "Diagnóstico",
+    risk: true,
+    detail: "Si aparece un bulto, secreción, cambio en la piel, dolor persistente u otra señal de alerta (a cualquier edad), el médico puede indicar una mamografía diagnóstica de inmediato, independientemente de si ya se realizó un screening reciente. No esperar al próximo control de rutina."
+  }
+];
+
+const whyData = [
+  {
+    icon: "🔬",
+    title: "Detecta lo que no se puede palpar",
+    stat: null,
+    text: "La mamografía puede identificar alteraciones de 2 a 4 años antes de que sean palpables. Esto permite intervenir cuando el tumor es pequeño y localizado, con mayor probabilidad de tratamiento exitoso."
+  },
+  {
+    icon: "📈",
+    title: "Aumenta la supervivencia",
+    stat: "+95%",
+    text: "La tasa de supervivencia a 5 años supera el 95% cuando el cáncer se detecta en estadio I (localizado). Cae drásticamente en estadios avanzados. El diagnóstico precoz marca la diferencia."
+  },
+  {
+    icon: "💊",
+    title: "Permite tratamientos menos invasivos",
+    stat: null,
+    text: "La detección en estadios tempranos suele requerir cirugías menos extensas, menor dosis de quimioterapia y mejores resultados cosméticos. Menos tratamiento, mejor calidad de vida."
+  },
+  {
+    icon: "🧬",
+    title: "Identifica lesiones premalignas",
+    stat: null,
+    text: "Algunas alteraciones detectadas en la mamografía no son aún cáncer, pero tienen potencial de transformarse. Identificarlas a tiempo permite un seguimiento cercano o tratamientos preventivos."
+  },
+  {
+    icon: "🛡",
+    title: "Baja dosis de radiación",
+    stat: null,
+    text: "La mamografía utiliza rayos X de muy baja dosis. El beneficio de la detección precoz supera ampliamente el mínimo riesgo asociado a la exposición radiológica, que es equivalente a la radiación natural que recibimos en pocas horas."
+  },
+  {
+    icon: "🌍",
+    title: "Respaldada por la evidencia científica",
+    stat: null,
+    text: "La OMS, la OPS y los principales organismos de salud del mundo recomiendan la mamografía periódica como el método de screening más efectivo disponible para la reducción de la mortalidad por cáncer de mama."
+  }
+];
+
+const procData = [
+  { num:1, title:"Preparación previa", text:"No usar desodorante, talco ni cremas en la zona de la mama y axila el día del estudio, ya que pueden generar artefactos en la imagen. Llevar mamografías anteriores si las tenés.", time:"Día del estudio" },
+  { num:2, title:"Recepción y registro", text:"El Técnico Radiólogo te recibe, verifica tus datos y te explica cómo se realizará el procedimiento. Es el momento para hacer preguntas o expresar inquietudes.", time:"5 minutos" },
+  { num:3, title:"Posicionamiento", text:"Se posiciona la mama sobre el receptor de imagen del equipo. El Técnico Radiólogo es quien realiza esta tarea con precisión, buscando la mejor proyección según las indicaciones del médico.", time:"3-5 minutos" },
+  { num:4, title:"Compresión y toma de imagen", text:"Se aplica una compresión leve con una paleta para aplanar el tejido y obtener una imagen clara con la menor dosis de radiación posible. La compresión dura solo 2-3 segundos por proyección.", time:"Por proyección" },
+  { num:5, title:"Proyecciones", text:"Generalmente se toman 2 proyecciones por mama: cráneo-caudal (de arriba hacia abajo) y oblicua mediolateral (en diagonal). En algunos casos se solicitan vistas adicionales.", time:"4 imágenes totales" },
+  { num:6, title:"Control de calidad", text:"El Técnico Radiólogo verifica la calidad técnica de las imágenes antes de dar por finalizado el estudio. Si alguna imagen no es diagnóstica, puede repetirse en el momento.", time:"Antes de retirarse" },
+  { num:7, title:"Informe médico", text:"Las imágenes son evaluadas por un médico radiólogo que emite un informe escrito. El tiempo de entrega varía según el centro. El resultado debe ser comunicado al médico tratante.", time:"1-5 días hábiles" },
+  { num:8, title:"Seguimiento", text:"Con el resultado en mano, el médico decide si el estudio es normal (próximo control según cronograma) o si requiere estudios complementarios (ecografía, biopsia, RMN). Nunca ignorar un resultado sospechoso.", time:"Con el médico" }
+];
+
+const accesoData = [
+  { title:"Hospitales públicos", text:"Todos los hospitales públicos del país deben contar con mamógrafo o derivación a un centro equipado. El estudio es gratuito para quienes no tienen obra social." },
+  { title:"CAPS (Centros de Atención Primaria)", text:"Son el primer nivel de atención. Allí podés pedir la derivación para la mamografía y recibir acompañamiento durante todo el proceso." },
+  { title:"Obra social y PAMI", text:"Todas las obras sociales y el PAMI tienen obligación de cubrir la mamografía de rastreo sin costo adicional para la persona afiliada." },
+  { title:"Mamógrafos móviles", text:"El Ministerio de Salud y las provincias organizan campañas con unidades móviles que llegan a barrios y localidades alejadas. Suelen atender sin turno previo." },
+  { title:"Programa Provincial", text:"San Luis cuenta con programas provinciales de detección precoz articulados con el programa nacional. En el stand podés solicitar información sobre los centros disponibles localmente." },
+  { title:"Medicina prepaga", text:"Las empresas de medicina prepaga también están obligadas a cubrir el estudio. Consultá tu cartilla o llamá al número de atención al afiliado para coordinar el turno." }
+];
+
+function buildTimeline() {
+  const c = document.getElementById('tlContainer');
+  tlData.forEach((t, i) => {
+    c.innerHTML += `
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-age">${t.age}</div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-card${t.risk?' risk':''}" id="tl-${i}" onclick="toggleTl(${i})">
+        <div class="tl-card-header">
+          <p class="tl-card-title">${t.title}</p>
+          <span class="tl-toggle" id="ttog-${i}">+</span>
+        </div>
+        <span class="tl-pill ${t.pill}">${t.pillLabel}</span>
+        <div class="tl-detail">${t.detail}</div>
+      </div>
+    </div>`;
+  });
+}
+
+function toggleTl(i) {
+  const el = document.getElementById('tl-'+i);
+  const tog = document.getElementById('ttog-'+i);
+  el.classList.toggle('open');
+  tog.textContent = el.classList.contains('open') ? '−' : '+';
+}
+
+function buildWhy() {
+  const g = document.getElementById('whyGrid');
+  whyData.forEach(w => {
+    g.innerHTML += `
+    <div class="why-card">
+      <span class="why-icon">${w.icon}</span>
+      ${w.stat ? `<div class="stat-highlight">${w.stat}</div><br>` : ''}
+      <p class="why-title">${w.title}</p>
+      <p class="why-text">${w.text}</p>
+    </div>`;
+  });
+}
+
+function buildProc() {
+  const g = document.getElementById('procSteps');
+  procData.forEach(p => {
+    g.innerHTML += `
+    <div class="proc-step">
+      <div class="proc-num">${p.num}</div>
+      <p class="proc-title">${p.title}</p>
+      <p class="proc-text">${p.text}</p>
+      <p class="proc-time">⏱ ${p.time}</p>
+    </div>`;
+  });
+}
+
+function buildAcceso() {
+  const g = document.getElementById('accesoGrid');
+  accesoData.forEach(a => {
+    g.innerHTML += `
+    <div class="acceso-item">
+      <p class="acceso-item-title">${a.title}</p>
+      <p class="acceso-item-text">${a.text}</p>
+    </div>`;
+  });
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+buildTimeline();
+buildWhy();
+buildProc();
+buildAcceso();
+</script>
